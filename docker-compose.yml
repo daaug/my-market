@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  my-market-apache:
+    build:
+      context: .
+      dockerfile: dockerfile-apache2
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - my-market-network
+
+  my-market-mysql:
+    build: 
+      context: .
+      dockerfile: dockerfile-mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - my-market-network
+
+networks:
+  my-market-network:
+    driver: bridge
