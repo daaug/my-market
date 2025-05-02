@@ -19,9 +19,11 @@ services:
       context: .
       dockerfile: dockerfile-mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASS}
     ports:
       - "3306:3306"
+    volumes:
+      - ./database:/database
     networks:
       - my-market-network
 
