@@ -1,5 +1,2 @@
-FROM mysql:8
-COPY database/my-market-schema.sql /
-RUN mysql < my-market-schema.sql
-
+FROM mysql:8-debian
 EXPOSE 3306

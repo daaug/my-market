@@ -1,7 +1,8 @@
 version: "3"
 
 services:
-  my-market-apache:
+  apache2:
+    container_name: my-market-apache2
     build:
       context: .
       dockerfile: dockerfile-apache2
@@ -12,10 +13,13 @@ services:
     networks:
       - my-market-network
 
-  my-market-mysql:
+  mysql:
+    container_name: my-market-mysql
     build: 
       context: .
       dockerfile: dockerfile-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
     ports:
       - "3306:3306"
     networks:
