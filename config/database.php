@@ -10,7 +10,7 @@ class MysqlConn {
     public $DB_NAME;
 
     function __construct(){
-        $env = file_get_contents(".env");
+        $env = file_get_contents("/var/www/html/.env");
         $lines = explode("\n", $env);
 
         foreach($lines as $line){
@@ -40,12 +40,17 @@ class MysqlConn {
 
     }
 
-    public function close_connection() {
-        $this->conn->close();
+    public function getElement($query) {
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result);
     }
 
-    public function insert($query) {
-        
+    public function addElement($query, $execute, $msg) {
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($execute);
+        echo json_encode(['message' => $msg]);
     }
 
 }
