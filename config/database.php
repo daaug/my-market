@@ -40,17 +40,49 @@ class MysqlConn {
 
     }
 
-    public function getElement($query) {
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
+    public function getElementById($table_name, $var_list) {
+        $stmt = $this->conn->prepare("SELECT * $table_name WHERE id = :id");
+        $stmt->execute($var_list);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($result);
+
+        $this->closeConn($stmt);
     }
 
-    public function addElement($query, $execute, $msg) {
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute($execute);
+    public function insertElement($table_name, $var_list, $msg) {
+        $columns = implode(",", array_keys($var_list));
+
+        // Add a colon to vars from an array_keys (ex: :name)
+        $colon_columns = implode(",", array_map( 
+            function($e) { return ":" . $e; },
+            array_keys($var_list)
+        ));
+
+        // Prepare the query
+        $stmt = $this->conn->prepare(
+            "INSERT INTO $table_name ($columns) VALUES ($colon_columns)"
+        );
+
+        // Run the query
+        $stmt->execute($var_list);
+
+        // Response
         echo json_encode(['message' => $msg]);
+
+        $this->closeConn($stmt);
+    }
+
+    public function deleteElementById($table_name, $var_list, $msg) {
+        $stmt = $this->conn->prepare("DELETE FROM $table_name WHERE id = :id");
+        $stmt->execute($var_list);
+        echo json_encode(['message' => $msg]);
+
+        $this->closeConn($stmt);
+    }
+
+    private function closeConn(&$stmt) {
+        $this->conn = null;
+        $stmt = null;
     }
 
 }

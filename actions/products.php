@@ -9,18 +9,28 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'POST':
-        $conn->addElement(
-            "INSERT INTO products (name, description, price) VALUES (:name, :description, :price)", 
+        $conn->insertElement(
+            "products", 
             [
                 "name" => $input["name"],
                 "description" => $input["description"],
-                "price" => $input["price"],
+                "price" => $input["price"]
             ],
             "Product added succesfully"
         );
         break;
     case 'GET':
-        $conn->getElement(
-            "SELECT * FROM products"
+        $conn->getElementById(
+            "products",
+            //["id" => $input["id"]]
+            ["id" => $_GET["id"]]
         );
+    
+    case 'DELETE':
+        $conn->deleteElementById(
+            "products",
+            ["id" => $input["id"]],
+            "Product deleted succesfully"
+        );
+    
 }
