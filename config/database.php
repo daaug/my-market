@@ -41,7 +41,9 @@ class MysqlConn {
     }
 
     public function getElementById($table_name, $var_list) {
-        $stmt = $this->conn->prepare("SELECT * $table_name WHERE id = :id");
+        $stmt = $this->conn->prepare(
+            "SELECT * FROM $table_name WHERE id = :id"
+        );
         $stmt->execute($var_list);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($result);

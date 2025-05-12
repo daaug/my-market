@@ -25,6 +25,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             //["id" => $input["id"]]
             ["id" => $_GET["id"]]
         );
+        break;
     
     case 'DELETE':
         $conn->deleteElementById(
@@ -32,5 +33,6 @@ switch($_SERVER['REQUEST_METHOD']) {
             ["id" => $input["id"]],
             "Product deleted succesfully"
         );
+        break;
     
 }
